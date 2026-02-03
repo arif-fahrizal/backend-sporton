@@ -19,7 +19,7 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "preserveSymlinks": true,
+    "preserveSymlinks": false,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
