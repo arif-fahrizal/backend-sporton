@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.routes';
 import bankRoutes from './routes/bank.routes';
 import categoryRoutes from './routes/category.routes';
 import productsRoutes from './routes/product.routes';
+import tranasctionRoutes from './routes/transaction.routes';
 
 const app: Application = express();
 
@@ -17,5 +18,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/banks', bankRoutes);
+app.use('/api/transactions', tranasctionRoutes);
 
 export default app;
