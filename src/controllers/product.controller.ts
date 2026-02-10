@@ -4,7 +4,7 @@ import Product from '../models/product.model';
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const products = await Product.find().populate('category').sort({ createdAt: -1 });
-    res.status(200).json({ success: true, message: 'Products fetched successfully', products });
+    res.status(200).json({ success: true, message: 'Products fetched successfully', data: products });
   } catch (error) {
     console.error('Get Products Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -17,7 +17,7 @@ export const getProductById = async (req: Request, res: Response) => {
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
-    res.status(200).json({ success: true, message: 'Product fetched successfully', product });
+    res.status(200).json({ success: true, message: 'Product fetched successfully', data: product });
   } catch (error) {
     console.error('Get Product By Id Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -32,7 +32,7 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     const product = await Product.create(productData);
-    res.status(201).json({ success: true, message: 'Product created successfully', product });
+    res.status(201).json({ success: true, message: 'Product created successfully', data: product });
   } catch (error) {
     console.error('Create Product Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -52,7 +52,7 @@ export const updateProduct = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Product updated successfully', product });
+    res.status(200).json({ success: true, message: 'Product updated successfully', data: product });
   } catch (error) {
     console.error('Update Product Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });

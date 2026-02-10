@@ -5,7 +5,7 @@ export const getCategories = async (req: Request, res: Response) => {
   try {
     const categories = await Category.find().sort({ createdAt: -1 });
 
-    res.status(200).json({ success: true, message: 'Categories fetched successfully', categories });
+    res.status(200).json({ success: true, message: 'Categories fetched successfully', data: categories });
   } catch (error) {
     console.error('Get Categories Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -20,7 +20,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Category fetched successfully', category });
+    res.status(200).json({ success: true, message: 'Category fetched successfully', data: category });
   } catch (error) {
     console.error('Get Category By Id Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -37,7 +37,7 @@ export const createCategory = async (req: Request, res: Response) => {
 
     const category = await Category.create(categoryData);
 
-    res.status(201).json({ success: true, message: 'Category created successfully', category });
+    res.status(201).json({ success: true, message: 'Category created successfully', data: category });
   } catch (error) {
     console.error('Create Category Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -58,7 +58,7 @@ export const updateCategory = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Category updated successfully', category });
+    res.status(200).json({ success: true, message: 'Category updated successfully', data: category });
   } catch (error) {
     console.error('Update Category Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });

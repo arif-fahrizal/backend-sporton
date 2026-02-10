@@ -19,7 +19,7 @@ export const signInUser = async (req: Request, res: Response) => {
       expiresIn: '1d',
     });
 
-    res.status(200).json({ status: true, message: 'Login successful', token, user });
+    res.status(200).json({ status: true, message: 'Login successful', token, data: user });
   } catch (error) {
     console.error('Signin Error', error);
     res.status(500).json({ status: false, message: 'Internal server error' });
@@ -48,7 +48,7 @@ export const initiateAdmin = async (req: Request, res: Response) => {
 
     const user = await User.create({ name, email, password: hashedPassword });
 
-    res.status(201).json({ success: true, message: 'Admin user created successfully', user });
+    res.status(201).json({ success: true, message: 'Admin user created successfully', data: user });
   } catch (error) {
     console.error('Initiate Admin Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });

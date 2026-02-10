@@ -5,7 +5,7 @@ import Transaction from '../models/transaction.model';
 export const getTransactions = async (req: Request, res: Response) => {
   try {
     const transactions = await Transaction.find().sort({ createdAt: -1 }).populate('purchasedItems.productId');
-    res.status(200).json({ success: true, message: 'Transactions fetched successfully', transactions });
+    res.status(200).json({ success: true, message: 'Transactions fetched successfully', data: transactions });
   } catch (error) {
     console.error('Get Transactions Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -19,7 +19,7 @@ export const getTransactionById = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Transaction not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Transaction fetched successfully', transaction });
+    res.status(200).json({ success: true, message: 'Transaction fetched successfully', data: transaction });
   } catch (error) {
     console.error('Get Transaction By Id Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -42,7 +42,7 @@ export const createTransaction = async (req: Request, res: Response) => {
     transactionBody.status = 'pending';
 
     const transaction = await Transaction.create(transactionBody);
-    res.status(201).json({ success: true, message: 'Transaction created successfully', transaction });
+    res.status(201).json({ success: true, message: 'Transaction created successfully', data: transaction });
   } catch (error) {
     console.error('Create Transaction Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
@@ -70,7 +70,7 @@ export const updateTransaction = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Transaction not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Transaction updated successfully', transaction });
+    res.status(200).json({ success: true, message: 'Transaction updated successfully', data: transaction });
   } catch (error) {
     console.error('Update Transaction Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
