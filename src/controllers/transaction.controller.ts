@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Product from '../models/product.model';
 import Transaction from '../models/transaction.model';
+import { normalizePath } from '../utils/normalizePath';
 
 export const getTransactions = async (req: Request, res: Response) => {
   try {
@@ -30,7 +31,7 @@ export const createTransaction = async (req: Request, res: Response) => {
     const transactionBody = req.body;
 
     if (req.file) {
-      transactionBody.paymentProof = req.file.path;
+      transactionBody.paymentProof = normalizePath(req.file.filename);
     } else {
       return res.status(400).json({ success: false, message: 'Payment proof is required' });
     }

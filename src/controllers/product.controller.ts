@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Product from '../models/product.model';
+import { normalizePath } from '../utils/normalizePath';
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
@@ -30,7 +31,7 @@ export const createProduct = async (req: Request, res: Response) => {
     const productData = req.body;
 
     if (req.file) {
-      productData.imageUrl = req.file.path;
+      productData.imageUrl = normalizePath(req.file.filename);
     }
 
     const product = await Product.create(productData);
@@ -46,7 +47,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     const productData = req.body;
 
     if (req.file) {
-      productData.imageUrl = req.file.path;
+      productData.imageUrl = normalizePath(req.file.filename);
     }
 
     const product = await Product.findByIdAndUpdate(req.params.id, productData, { new: true });
@@ -61,7 +62,6 @@ export const updateProduct = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
-
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);

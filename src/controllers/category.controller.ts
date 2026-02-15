@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Category from '../models/category.model';
+import { normalizePath } from '../utils/normalizePath';
 
 export const getCategories = async (req: Request, res: Response) => {
   try {
@@ -32,7 +33,7 @@ export const createCategory = async (req: Request, res: Response) => {
     const categoryData = req.body;
 
     if (req.file) {
-      categoryData.imageUrl = req.file.path;
+      categoryData.imageUrl = normalizePath(req.file.filename);
     }
 
     const category = await Category.create(categoryData);
@@ -49,7 +50,7 @@ export const updateCategory = async (req: Request, res: Response) => {
     const categoryData = req.body;
 
     if (req.file) {
-      categoryData.imageUrl = req.file.path;
+      categoryData.imageUrl = normalizePath(req.file.filename);
     }
 
     const category = await Category.findByIdAndUpdate(req.params.id, categoryData, { new: true });
