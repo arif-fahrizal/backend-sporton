@@ -12,10 +12,10 @@ import { upload } from '../middlewares/upload.middleware';
 const router: Router = Router();
 
 router.get('/', authMiddleware, getTransactions);
-router.post('/checkout', upload.single('image'), authMiddleware, createTransaction);
+router.post('/checkout', upload.single('image'), createTransaction);
 router
   .route('/:id')
-  .get(authMiddleware, getTransactionById)
+  .get(getTransactionById)
   .put(authMiddleware, updateTransaction)
   .delete(authMiddleware, deleteTransaction);
 
