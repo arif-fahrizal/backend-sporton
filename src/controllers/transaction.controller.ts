@@ -12,6 +12,7 @@ export const getTransactions = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
 export const getTransactionById = async (req: Request, res: Response) => {
   try {
     const transaction = await Transaction.findById(req.params.id).populate('purchasedItems.productId');
@@ -26,6 +27,7 @@ export const getTransactionById = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
 export const createTransaction = async (req: Request, res: Response) => {
   try {
     const transactionBody = req.body;
@@ -49,6 +51,7 @@ export const createTransaction = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
 export const updateTransaction = async (req: Request, res: Response) => {
   try {
     const { status } = req.body;
@@ -77,6 +80,7 @@ export const updateTransaction = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
 export const deleteTransaction = async (req: Request, res: Response) => {
   try {
     const transaction = await Transaction.findByIdAndDelete(req.params.id);
