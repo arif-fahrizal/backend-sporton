@@ -33,7 +33,7 @@ export const createCategory = async (req: Request, res: Response) => {
     const categoryData = req.body;
 
     if (req.file) {
-      categoryData.imageUrl = normalizePath(req.file.filename);
+      categoryData.image = normalizePath(req.file.filename);
     }
 
     const category = await Category.create(categoryData);
@@ -50,7 +50,7 @@ export const updateCategory = async (req: Request, res: Response) => {
     const categoryData = req.body;
 
     if (req.file) {
-      categoryData.imageUrl = normalizePath(req.file.filename);
+      categoryData.image = normalizePath(req.file.filename);
     }
 
     const category = await Category.findByIdAndUpdate(req.params.id, categoryData, { new: true });

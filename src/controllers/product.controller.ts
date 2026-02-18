@@ -31,7 +31,7 @@ export const createProduct = async (req: Request, res: Response) => {
     const productData = req.body;
 
     if (req.file) {
-      productData.imageUrl = normalizePath(req.file.filename);
+      productData.image = normalizePath(req.file.filename);
     }
 
     const product = await Product.create(productData);
@@ -47,7 +47,7 @@ export const updateProduct = async (req: Request, res: Response) => {
     const productData = req.body;
 
     if (req.file) {
-      productData.imageUrl = normalizePath(req.file.filename);
+      productData.image = normalizePath(req.file.filename);
     }
 
     const product = await Product.findByIdAndUpdate(req.params.id, productData, { new: true });
