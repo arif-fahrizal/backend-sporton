@@ -1,5 +1,11 @@
 import { Router } from 'express';
-import { createProduct, deleteProduct, getProductById, getProducts } from '../controllers/product.controller';
+import {
+  createProduct,
+  deleteProduct,
+  getProductById,
+  getProducts,
+  updateProduct,
+} from '../controllers/product.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { upload } from '../middlewares/upload.middleware';
 
@@ -10,7 +16,7 @@ router.route('/').get(getProducts).post(authMiddleware, upload.single('image'), 
 router
   .route('/:id')
   .get(getProductById)
-  .put(authMiddleware, upload.single('image'), createProduct)
+  .put(authMiddleware, upload.single('image'), updateProduct)
   .delete(authMiddleware, deleteProduct);
 
 export default router;
