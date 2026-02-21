@@ -1,19 +1,5 @@
-import mongoose, { Document, Schema } from 'mongoose';
-
-export interface IPurchasedItem {
-  productId: string;
-  quantity: number;
-}
-
-export interface ITransaction extends Document {
-  paymentProof: string;
-  status: 'pending' | 'paid' | 'rejected';
-  purchasedItems: IPurchasedItem[];
-  totalPayment: number;
-  customerName: string;
-  customerContact: string;
-  customerAddress: string;
-}
+import mongoose, { Schema } from 'mongoose';
+import { ITransaction } from '../types/transaction.types';
 
 const PurchasedSchema = new Schema(
   {
@@ -25,13 +11,13 @@ const PurchasedSchema = new Schema(
 
 const TransactionSchema = new Schema(
   {
-    paymentProof: { type: String, required: true },
+    paymentProof: { type: String, required: [true, 'Payment Proof is required'] },
     status: { type: String, enum: ['pending', 'paid', 'rejected'], default: 'pending' },
-    purchasedItems: { type: [PurchasedSchema], required: true },
-    totalPayment: { type: Number, required: true },
-    customerName: { type: String, required: true },
-    customerContact: { type: String, required: true },
-    customerAddress: { type: String, required: true },
+    purchasedItems: { type: [PurchasedSchema], required: [true, 'Purchased Items is required'] },
+    totalPayment: { type: Number, required: [true, 'Total Payment is required'] },
+    customerName: { type: String, required: [true, 'Customer Name is required'] },
+    customerContact: { type: String, required: [true, 'Customer Contact is required'] },
+    customerAddress: { type: String, required: [true, 'Customer Address is required'] },
   },
   { timestamps: true }
 );

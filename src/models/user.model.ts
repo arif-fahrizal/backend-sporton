@@ -1,16 +1,16 @@
-import mongoose, { Document, Schema } from 'mongoose';
-
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  password: string;
-}
+import mongoose, { Schema } from 'mongoose';
+import { IUser } from '../types/user.types';
 
 const userSchema: Schema = new Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    name: { type: String, required: [true, 'Name is required'], minLength: [3, 'Name must be at least 3 characters'] },
+    email: { type: String, required: [true, 'Email is required'], unique: [true, 'Email already exists'] },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minLength: [6, 'Password must be at least 6 characters'],
+      trim: true,
+    },
   },
   { timestamps: true }
 );

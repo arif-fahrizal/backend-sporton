@@ -1,22 +1,32 @@
-import mongoose, { Document, Schema } from 'mongoose';
-
-export interface IProduct extends Document {
-  name: string;
-  description: string;
-  stock: number;
-  price: number;
-  image: string;
-  category: mongoose.Types.ObjectId;
-}
+import mongoose, { Schema } from 'mongoose';
+import { IProduct } from '../types/product.type';
 
 const productSchema: Schema = new Schema(
   {
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    stock: { type: Number, required: true },
-    price: { type: Number, required: true },
-    image: { type: String, required: true },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+    name: {
+      type: String,
+      maxLength: [50, 'Product Name cannot exceed 50 characters'],
+      required: [true, 'Product Name is required'],
+    },
+    description: {
+      type: String,
+      maxLength: [100, 'Product Description cannot exceed 100 characters'],
+      required: [true, 'Product Description is required'],
+    },
+    stock: {
+      type: Number,
+      required: [true, 'Product Stock is required'],
+    },
+    price: {
+      type: Number,
+      required: [true, 'Product Price is required'],
+    },
+    image: { type: String, required: [true, 'Product Image is required'] },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      required: [true, 'Product Category is required'],
+    },
   },
   { timestamps: true }
 );
