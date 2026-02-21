@@ -2,7 +2,7 @@ import Bank from '../models/bank.model';
 import { BankType } from '../types/bank.types';
 
 export class BankRepository {
-  async getBanks() {
+  async findBanks() {
     try {
       return await Bank.find().sort({ createdAt: -1 });
     } catch (error) {
@@ -11,7 +11,7 @@ export class BankRepository {
     }
   }
 
-  async getBankById(id: string) {
+  async findBankById(id: string) {
     try {
       return await Bank.findById(id);
     } catch (error) {
@@ -29,7 +29,7 @@ export class BankRepository {
     }
   }
 
-  async updateBank(id: string, bank: BankType) {
+  async findByIdAndUpdateBank(id: string, bank: BankType) {
     try {
       return await Bank.findByIdAndUpdate(id, bank, { new: true });
     } catch (error) {
@@ -38,7 +38,7 @@ export class BankRepository {
     }
   }
 
-  async deleteBank(id: string) {
+  async findByIdAndDeleteBank(id: string) {
     try {
       return await Bank.findByIdAndDelete(id);
     } catch (error) {

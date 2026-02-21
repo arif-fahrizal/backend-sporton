@@ -2,7 +2,7 @@ import Category from '../models/category.model';
 import { CategoryType } from '../types/category.types';
 
 export class CategoryRepository {
-  async getCategories() {
+  async findCategories() {
     try {
       return await Category.find().sort({ createdAt: -1 });
     } catch (error) {
@@ -11,7 +11,7 @@ export class CategoryRepository {
     }
   }
 
-  async getCategoryById(id: string) {
+  async findCategoryById(id: string) {
     try {
       return await Category.findById(id);
     } catch (error) {
@@ -29,7 +29,7 @@ export class CategoryRepository {
     }
   }
 
-  async updateCategory(id: string, category: CategoryType) {
+  async findByIdAndUpdateCategory(id: string, category: CategoryType) {
     try {
       return await Category.findByIdAndUpdate(id, category, { new: true });
     } catch (error) {
@@ -38,7 +38,7 @@ export class CategoryRepository {
     }
   }
 
-  async deleteCategory(id: string) {
+  async findByIdAndDeleteCategory(id: string) {
     try {
       return await Category.findByIdAndDelete(id);
     } catch (error) {

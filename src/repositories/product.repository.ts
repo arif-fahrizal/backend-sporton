@@ -2,7 +2,7 @@ import Product from '../models/product.model';
 import { ProductType } from '../types/product.type';
 
 export class ProductRepository {
-  async getProducts() {
+  async findProducts() {
     try {
       return await Product.find().populate('category').sort({ createdAt: -1 });
     } catch (error) {
@@ -11,7 +11,7 @@ export class ProductRepository {
     }
   }
 
-  async getProductById(id: string) {
+  async findProductById(id: string) {
     try {
       return await Product.findById(id).populate('category');
     } catch (error) {
@@ -29,7 +29,7 @@ export class ProductRepository {
     }
   }
 
-  async updateProduct(id: string, product: ProductType) {
+  async findByIdAndUpdateProduct(id: string, product: ProductType) {
     try {
       return await Product.findByIdAndUpdate(id, product, { new: true });
     } catch (error) {
@@ -38,7 +38,7 @@ export class ProductRepository {
     }
   }
 
-  async deleteProduct(id: string) {
+  async findByIdAndDeleteProduct(id: string) {
     try {
       return await Product.findByIdAndDelete(id);
     } catch (error) {

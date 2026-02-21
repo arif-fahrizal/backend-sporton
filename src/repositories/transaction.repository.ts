@@ -2,7 +2,7 @@ import Transaction from '../models/transaction.model';
 import { TransactionType } from '../types/transaction.types';
 
 export class TransactionRepository {
-  async getTransactions() {
+  async findTransactions() {
     try {
       return await Transaction.find().sort({ createdAt: -1 }).populate('purchasedItems.productId');
     } catch (error) {
@@ -11,7 +11,7 @@ export class TransactionRepository {
     }
   }
 
-  async getTransactionById(id: string) {
+  async findTransactionById(id: string) {
     try {
       return await Transaction.findById(id).populate('purchasedItems.productId');
     } catch (error) {
@@ -29,7 +29,7 @@ export class TransactionRepository {
     }
   }
 
-  async updateTransaction(id: string, transaction: TransactionType) {
+  async findByIdAndUpdateTransaction(id: string, transaction: TransactionType) {
     try {
       return await Transaction.findByIdAndUpdate(id, transaction, { new: true });
     } catch (error) {
@@ -38,7 +38,7 @@ export class TransactionRepository {
     }
   }
 
-  async deleteTransaction(id: string) {
+  async findByIdAndDeleteTransaction(id: string) {
     try {
       return await Transaction.findByIdAndDelete(id);
     } catch (error) {
