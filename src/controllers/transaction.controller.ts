@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
-import Product from '../models/product.model';
-import Transaction from '../models/transaction.model';
+import { ProductService } from '../services/product.service';
+import { TransactionService } from '../services/transaction.service';
 import { normalizePath } from '../utils/normalizePath';
+
+const Transaction = new TransactionService();
+const Product = new ProductService();
 
 export const getTransactions = async (req: Request, res: Response) => {
   try {
-    const transactions = await Transaction.find().sort({ createdAt: -1 }).populate('purchasedItems.productId');
+    const transactions = await Transaction.getTransactions();
     res.status(200).json({ success: true, message: 'Transactions fetched successfully', data: transactions });
   } catch (error) {
     console.error('Get Transactions Error', error);
@@ -15,7 +18,7 @@ export const getTransactions = async (req: Request, res: Response) => {
 
 export const getTransactionById = async (req: Request, res: Response) => {
   try {
-    const transaction = await Transaction.findById(req.params.id).populate('purchasedItems.productId');
+    const transaction = await Transaction.getTransactionById(req.params.id as string);
 
     if (!transaction) {
       return res.status(404).json({ success: false, message: 'Transaction not found' });
@@ -44,7 +47,7 @@ export const createTransaction = async (req: Request, res: Response) => {
 
     transactionBody.status = 'pending';
 
-    const transaction = await Transaction.create(transactionBody);
+    const transaction = await Transaction.createTransaction(transactionBody);
     res.status(201).json({ success: true, message: 'Transaction created successfully', data: transaction });
   } catch (error) {
     console.error('Create Transaction Error', error);
@@ -56,7 +59,7 @@ export const updateTransaction = async (req: Request, res: Response) => {
   try {
     const { status } = req.body;
 
-    const existingTransaction = await Transaction.findById(req.params.id);
+    const existingTransaction = await Transaction.getTransactionById(req.params.id as string);
 
     if (!existingTransaction) {
       return res.status(404).json({ success: false, message: 'Transaction not found' });
@@ -64,11 +67,11 @@ export const updateTransaction = async (req: Request, res: Response) => {
 
     if (status === 'paid' && existingTransaction.status !== 'paid') {
       for (const item of existingTransaction.purchasedItems) {
-        await Product.findByIdAndUpdate(item.productId, { $inc: { stock: -item.quantity } });
+        await Product.updateProduct(item.productId, { $inc: { stock: -item.quantity } } as any);
       }
     }
 
-    const transaction = await Transaction.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    const transaction = await Transaction.updateTransaction(req.params.id as string, { status } as any);
 
     if (!transaction) {
       return res.status(404).json({ success: false, message: 'Transaction not found' });
@@ -83,7 +86,7 @@ export const updateTransaction = async (req: Request, res: Response) => {
 
 export const deleteTransaction = async (req: Request, res: Response) => {
   try {
-    const transaction = await Transaction.findByIdAndDelete(req.params.id);
+    const transaction = await Transaction.deleteTransaction(req.params.id as string);
 
     if (!transaction) {
       return res.status(404).json({ success: false, message: 'Transaction not found' });

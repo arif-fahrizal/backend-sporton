@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
-import Product from '../models/product.model';
+import { ProductService } from '../services/product.service';
 import { normalizePath } from '../utils/normalizePath';
+
+const Product = new ProductService();
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Product.find().populate('category').sort({ createdAt: -1 });
+    const products = await Product.getProducts();
     res.status(200).json({ success: true, message: 'Products fetched successfully', data: products });
   } catch (error) {
     console.error('Get Products Error', error);
@@ -14,7 +16,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findById(req.params.id).populate('category');
+    const product = await Product.getProductById(req.params.id as string);
 
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
@@ -34,7 +36,7 @@ export const createProduct = async (req: Request, res: Response) => {
       productData.image = normalizePath(req.file.filename);
     }
 
-    const product = await Product.create(productData);
+    const product = await Product.createProduct(productData);
     res.status(201).json({ success: true, message: 'Product created successfully', data: product });
   } catch (error) {
     console.error('Create Product Error', error);
@@ -50,7 +52,7 @@ export const updateProduct = async (req: Request, res: Response) => {
       productData.image = normalizePath(req.file.filename);
     }
 
-    const product = await Product.findByIdAndUpdate(req.params.id, productData, { new: true });
+    const product = await Product.updateProduct(req.params.id as string, productData);
 
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
@@ -65,7 +67,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
+    const product = await Product.deleteProduct(req.params.id as string);
 
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });

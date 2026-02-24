@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
-import Bank from '../models/bank.model';
+import { BankService } from '../services/bank.service';
+
+const Bank = new BankService();
 
 export const getBanks = async (req: Request, res: Response) => {
   try {
-    const banks = await Bank.find().sort({ createdAt: -1 });
+    const banks = await Bank.getBanks();
     res.status(200).json({ success: true, message: 'Banks fetched successfully', data: banks });
   } catch (error) {
     console.error('Get Banks Error', error);
@@ -13,7 +15,7 @@ export const getBanks = async (req: Request, res: Response) => {
 
 export const getBankById = async (req: Request, res: Response) => {
   try {
-    const bank = await Bank.findById(req.params.id);
+    const bank = await Bank.getBankById(req.params.id as string);
 
     if (!bank) {
       return res.status(404).json({ success: false, message: 'Bank not found' });
@@ -28,7 +30,7 @@ export const getBankById = async (req: Request, res: Response) => {
 
 export const createBank = async (req: Request, res: Response) => {
   try {
-    const bank = await Bank.create(req.body);
+    const bank = await Bank.createBank(req.body);
     res.status(201).json({ success: true, message: 'Bank created successfully', data: bank });
   } catch (error) {
     console.error('Create Bank Error', error);
@@ -38,7 +40,7 @@ export const createBank = async (req: Request, res: Response) => {
 
 export const updateBank = async (req: Request, res: Response) => {
   try {
-    const bank = await Bank.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const bank = await Bank.updateBank(req.params.id as string, req.body);
 
     if (!bank) {
       return res.status(404).json({ success: false, message: 'Bank not found' });
@@ -53,7 +55,7 @@ export const updateBank = async (req: Request, res: Response) => {
 
 export const deleteBank = async (req: Request, res: Response) => {
   try {
-    const bank = await Bank.findByIdAndDelete(req.params.id);
+    const bank = await Bank.deleteBank(req.params.id as string);
 
     if (!bank) {
       return res.status(404).json({ success: false, message: 'Bank not found' });

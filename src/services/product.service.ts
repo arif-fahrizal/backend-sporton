@@ -1,5 +1,5 @@
 import { ProductRepository } from '../repositories/product.repository';
-import { ProductType } from '../types/product.type';
+import { ProductType } from '../types/product.types';
 
 export class ProductService {
   private productRepository: ProductRepository;

@@ -1,5 +1,5 @@
 import { TransactionRepository } from '../repositories/transaction.repository';
-import { TransactionType } from '../types/transaction.type';
+import { TransactionType } from '../types/transaction.types';
 
 export class TransactionService {
   private transactionRepository: TransactionRepository;
