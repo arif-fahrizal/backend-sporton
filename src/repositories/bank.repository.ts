@@ -1,10 +1,30 @@
 import Bank from '../models/bank.model';
-import { BankType } from '../types/bank.types';
+import { PaginationType } from '../types/_index';
+import { BankQuery, BankType } from '../types/bank.types';
 
 export class BankRepository {
-  async findBanks() {
+  async findBanks(query: BankQuery = {}): Promise<{ data: BankType[]; pagination: PaginationType }> {
     try {
-      return await Bank.find().sort({ createdAt: -1 });
+      const { search, page = 1, limit = 10 } = query;
+
+      const filter: any = {};
+      const pageNumber = Math.max(1, page);
+      const limitNumber = Math.min(10, Math.max(1, limit));
+      const skip = (pageNumber - 1) * limitNumber;
+
+      if (search && search.trim() !== '') {
+        filter.bankName = { $regex: search, $options: 'i' };
+      }
+
+      const [data, total] = await Promise.all([
+        Bank.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limitNumber).lean(),
+        Bank.countDocuments(filter),
+      ]);
+
+      const totalPages = Math.ceil(total / limitNumber);
+      const pagination = { page: pageNumber, limit: limitNumber, total, totalPages };
+
+      return { data, pagination };
     } catch (error) {
       console.error('Get Banks Repository Error', error);
       throw error;

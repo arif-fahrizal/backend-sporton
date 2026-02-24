@@ -5,8 +5,8 @@ const Bank = new BankService();
 
 export const getBanks = async (req: Request, res: Response) => {
   try {
-    const banks = await Bank.getBanks();
-    res.status(200).json({ success: true, message: 'Banks fetched successfully', data: banks });
+    const { data, pagination } = await Bank.getBanks(req);
+    res.status(200).json({ success: true, message: 'Banks fetched successfully', data, pagination });
   } catch (error) {
     console.error('Get Banks Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });

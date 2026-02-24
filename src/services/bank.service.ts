@@ -1,5 +1,7 @@
+import { Request } from 'express';
 import { BankRepository } from '../repositories/bank.repository';
-import { BankType } from '../types/bank.types';
+import { PaginationType } from '../types/_index';
+import { BankQuery, BankType } from '../types/bank.types';
 
 export class BankService {
   private bankRepository: BankRepository;
@@ -7,9 +9,9 @@ export class BankService {
     this.bankRepository = new BankRepository();
   }
 
-  async getBanks() {
+  async getBanks(req: Request): Promise<{ data: BankType[]; pagination: PaginationType }> {
     try {
-      return await this.bankRepository.findBanks();
+      return await this.bankRepository.findBanks(req.query as BankQuery);
     } catch (error) {
       console.error('Get Banks Service Error', error);
       throw error;

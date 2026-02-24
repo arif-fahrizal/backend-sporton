@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ProductService } from '../services/product.service';
 import { TransactionService } from '../services/transaction.service';
-import { normalizePath } from '../utils/normalizePath';
+import { normalizePath } from '../utils/normalizePath.util';
 
 const Transaction = new TransactionService();
 const Product = new ProductService();

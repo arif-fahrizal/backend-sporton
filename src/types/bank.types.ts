@@ -1,3 +1,5 @@
+import { BaseQueryTypes } from './_index';
+
 export interface BankType {
   bankName: string;
   accountName: string;
@@ -5,3 +7,5 @@ export interface BankType {
 }
 
 export interface IBank extends BankType, Document {}
+
+export interface BankQuery extends Pick<BaseQueryTypes, 'search' | 'page' | 'limit'> {}

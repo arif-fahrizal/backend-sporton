@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ProductService } from '../services/product.service';
-import { normalizePath } from '../utils/normalizePath';
+import { normalizePath } from '../utils/normalizePath.util';
 
 const Product = new ProductService();
 

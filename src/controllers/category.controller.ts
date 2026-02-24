@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CategoryService } from '../services/category.service';
-import { normalizePath } from '../utils/normalizePath';
+import { normalizePath } from '../utils/normalizePath.util';
 
 const Category = new CategoryService();
 
