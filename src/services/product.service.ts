@@ -1,4 +1,6 @@
+import { Request } from 'express';
 import { ProductRepository } from '../repositories/product.repository';
+import { BaseQueryTypes } from '../types/_index';
 import { ProductType } from '../types/product.types';
 
 export class ProductService {
@@ -8,9 +10,9 @@ export class ProductService {
     this.productRepository = new ProductRepository();
   }
 
-  async getProducts() {
+  async getProducts(req: Request) {
     try {
-      return await this.productRepository.findProducts();
+      return await this.productRepository.findProducts(req.query as BaseQueryTypes);
     } catch (error) {
       console.error('Get Products Service Error', error);
       throw error;

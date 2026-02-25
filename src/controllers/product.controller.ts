@@ -6,8 +6,8 @@ const Product = new ProductService();
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Product.getProducts();
-    res.status(200).json({ success: true, message: 'Products fetched successfully', data: products });
+    const { data, pagination } = await Product.getProducts(req);
+    res.status(200).json({ success: true, message: 'Products fetched successfully', data, pagination });
   } catch (error) {
     console.error('Get Products Error', error);
     res.status(500).json({ success: false, message: 'Internal server error' });

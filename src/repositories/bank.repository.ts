@@ -8,8 +8,8 @@ export class BankRepository {
       const { search, page = 1, limit = 10 } = query;
 
       const filter: any = {};
-      const pageNumber = Math.max(1, page);
-      const limitNumber = Math.min(10, Math.max(1, limit));
+      const pageNumber = Math.max(1, Number(page));
+      const limitNumber = Math.max(10, Number(limit));
       const skip = (pageNumber - 1) * limitNumber;
 
       if (search && search.trim() !== '') {
