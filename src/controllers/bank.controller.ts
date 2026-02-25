@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import { BankService } from '../services/bank.service';
 import { AppError } from '../utils/errorHandler.util';
+import { successResponse } from '../utils/response.utils';
 
 const Bank = new BankService();
 
 export const getBanks = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { data, pagination } = await Bank.getBanks(req);
-    res.status(200).json({ status: 'Success', message: 'Banks fetched successfully', data, pagination });
+
+    successResponse(res, 200, 'Banks fetched successfully', data, pagination);
   } catch (error) {
     next(error);
   }
@@ -19,7 +21,7 @@ export const getBankById = async (req: Request, res: Response, next: NextFunctio
 
     if (!bank) throw new AppError(404, 'Bank not found');
 
-    res.status(200).json({ status: 'Success', message: 'Bank fetched successfully', data: bank });
+    successResponse(res, 200, 'Bank fetched successfully', bank);
   } catch (error) {
     next(error);
   }
@@ -28,7 +30,7 @@ export const getBankById = async (req: Request, res: Response, next: NextFunctio
 export const createBank = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const bank = await Bank.createBank(req.body);
-    res.status(201).json({ status: 'Success', message: 'Bank created successfully', data: bank });
+    successResponse(res, 201, 'Bank created successfully', bank);
   } catch (error) {
     next(error);
   }
@@ -40,7 +42,7 @@ export const updateBank = async (req: Request, res: Response, next: NextFunction
 
     if (!bank) throw new AppError(404, 'Bank not found');
 
-    res.status(200).json({ status: 'Success', message: 'Bank updated successfully', data: bank });
+    successResponse(res, 200, 'Bank updated successfully', bank);
   } catch (error) {
     next(error);
   }
@@ -52,7 +54,7 @@ export const deleteBank = async (req: Request, res: Response, next: NextFunction
 
     if (!bank) throw new AppError(404, 'Bank not found');
 
-    res.status(200).json({ status: 'Success', message: 'Bank deleted successfully' });
+    successResponse(res, 204, 'Bank deleted successfully');
   } catch (error) {
     next(error);
   }

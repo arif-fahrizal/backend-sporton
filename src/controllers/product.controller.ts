@@ -2,13 +2,15 @@ import { NextFunction, Request, Response } from 'express';
 import { ProductService } from '../services/product.service';
 import { AppError } from '../utils/errorHandler.util';
 import { normalizePath } from '../utils/normalizePath.util';
+import { successResponse } from '../utils/response.utils';
 
 const Product = new ProductService();
 
 export const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { data, pagination } = await Product.getProducts(req);
-    res.status(200).json({ status: 'Success', message: 'Products fetched successfully', data, pagination });
+
+    successResponse(res, 200, 'Products fetched successfully', data, pagination);
   } catch (error) {
     next(error);
   }
@@ -21,8 +23,7 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
     if (!product) {
       throw new AppError(404, 'Product not found');
     }
-
-    res.status(200).json({ status: 'Success', message: 'Product fetched successfully', data: product });
+    successResponse(res, 200, 'Product fetched successfully', product);
   } catch (error) {
     next(error);
   }
@@ -37,7 +38,7 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
     }
 
     const product = await Product.createProduct(productData);
-    res.status(201).json({ status: 'Success', message: 'Product created successfully', data: product });
+    successResponse(res, 201, 'Product created successfully', product);
   } catch (error) {
     next(error);
   }
@@ -56,8 +57,7 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
     if (!product) {
       throw new AppError(404, 'Product not found');
     }
-
-    res.status(200).json({ status: 'Success', message: 'Product updated successfully', data: product });
+    successResponse(res, 200, 'Product updated successfully', product);
   } catch (error) {
     next(error);
   }
@@ -70,8 +70,7 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
     if (!product) {
       throw new AppError(404, 'Product not found');
     }
-
-    res.status(200).json({ status: 'Success', message: 'Product deleted successfully' });
+    successResponse(res, 204, 'Product deleted successfully', product);
   } catch (error) {
     next(error);
   }

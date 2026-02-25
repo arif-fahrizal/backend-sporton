@@ -20,7 +20,7 @@ export const signInUser = async (req: Request, res: Response, next: NextFunction
       expiresIn: '1d',
     });
 
-    res.status(200).json({ status: true, message: 'Login successful', token, data: user });
+    res.status(200).json({ status: 200, success: true, message: 'Login successful', token, data: user });
   } catch (error) {
     next(error);
   }
@@ -45,7 +45,7 @@ export const initiateAdmin = async (req: Request, res: Response, next: NextFunct
 
     const user = await User.create({ name, email, password: hashedPassword });
 
-    res.status(201).json({ status: 'Success', message: 'Admin user created successfully', data: user });
+    res.status(201).json({ status: 201, success: true, message: 'Admin user created successfully', data: user });
   } catch (error) {
     next(error);
   }

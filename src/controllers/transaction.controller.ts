@@ -3,6 +3,7 @@ import { ProductService } from '../services/product.service';
 import { TransactionService } from '../services/transaction.service';
 import { AppError } from '../utils/errorHandler.util';
 import { normalizePath } from '../utils/normalizePath.util';
+import { successResponse } from '../utils/response.utils';
 
 const Transaction = new TransactionService();
 const Product = new ProductService();
@@ -10,7 +11,8 @@ const Product = new ProductService();
 export const getTransactions = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const transactions = await Transaction.getTransactions();
-    res.status(200).json({ status: 'Success', message: 'Transactions fetched successfully', data: transactions });
+
+    successResponse(res, 200, 'Transactions fetched successfully', transactions);
   } catch (error) {
     next(error);
   }
@@ -22,7 +24,7 @@ export const getTransactionById = async (req: Request, res: Response, next: Next
 
     if (!transaction) throw new AppError(404, 'Transaction not found');
 
-    res.status(200).json({ status: 'Success', message: 'Transaction fetched successfully', data: transaction });
+    successResponse(res, 200, 'Transaction fetched successfully', transaction);
   } catch (error) {
     next(error);
   }
@@ -45,7 +47,7 @@ export const createTransaction = async (req: Request, res: Response, next: NextF
     transactionBody.status = 'pending';
 
     const transaction = await Transaction.createTransaction(transactionBody);
-    res.status(201).json({ status: 'Success', message: 'Transaction created successfully', data: transaction });
+    successResponse(res, 201, 'Transaction created successfully', transaction);
   } catch (error) {
     next(error);
   }
@@ -69,7 +71,7 @@ export const updateTransaction = async (req: Request, res: Response, next: NextF
 
     if (!transaction) throw new AppError(404, 'Transaction not found');
 
-    res.status(200).json({ status: 'Success', message: 'Transaction updated successfully', data: transaction });
+    successResponse(res, 200, 'Transaction updated successfully', transaction);
   } catch (error) {
     next(error);
   }
@@ -81,7 +83,7 @@ export const deleteTransaction = async (req: Request, res: Response, next: NextF
 
     if (!transaction) throw new AppError(404, 'Transaction not found');
 
-    res.status(200).json({ status: 'Success', message: 'Transaction deleted successfully' });
+    successResponse(res, 204, 'Transaction deleted successfully');
   } catch (error) {
     next(error);
   }
