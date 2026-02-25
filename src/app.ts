@@ -1,9 +1,10 @@
 import cors from 'cors';
 import express, { Application } from 'express';
-import ExpressMongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import path from 'node:path';
+import { globalErrorHandler } from './middlewares/error.middleware';
+import { sanitizeRequest } from './middlewares/sanitizeRequest.middleware';
 import authRoutes from './routes/auth.routes';
 import bankRoutes from './routes/bank.routes';
 import categoryRoutes from './routes/category.routes';
@@ -29,8 +30,8 @@ const corsOptions = {
 
 app.use(helmet());
 app.use(limiter);
+app.use(sanitizeRequest);
 app.use(cors(corsOptions));
-app.use(ExpressMongoSanitize());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
@@ -40,5 +41,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/banks', bankRoutes);
 app.use('/api/transactions', tranasctionRoutes);
+
+app.use(globalErrorHandler);
 
 export default app;
