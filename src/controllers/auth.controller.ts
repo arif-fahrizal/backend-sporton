@@ -26,7 +26,7 @@ export const signInUser = async (req: Request, res: Response, next: NextFunction
   }
 };
 
-export const initiateAdmin = async (req: Request, res: Response, next: NextFunction) => {
+export const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, email, password } = req.body;
 
