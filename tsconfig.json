@@ -41,6 +41,8 @@
     "moduleDetection": "force",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
