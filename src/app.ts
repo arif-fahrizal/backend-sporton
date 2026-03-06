@@ -3,6 +3,7 @@ import express, { Application } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import path from 'node:path';
+import { dbMiddleware } from './middlewares/db.middleware';
 import { globalErrorHandler } from './middlewares/error.middleware';
 import { sanitizeRequest } from './middlewares/sanitizeRequest.middleware';
 import authRoutes from './routes/auth.routes';
@@ -35,6 +36,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use(dbMiddleware);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
