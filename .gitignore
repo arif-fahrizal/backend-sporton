@@ -19,6 +19,7 @@
 
 # production
 /build
+swagger.*
 
 # misc
 .DS_Store
