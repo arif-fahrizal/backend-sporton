@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import Category from '../models/category.model';
 import Product from '../models/product.model';
 import { BaseQueryTypes, PaginationType } from '../types/_index';
 import { ProductType } from '../types/product.types';
@@ -14,8 +14,12 @@ export class ProductRepository {
         filter.name = { $regex: search, $options: 'i' };
       }
 
-      if (category && mongoose.Types.ObjectId.isValid(category)) {
-        filter.category = category;
+      if (category && category.trim() !== '') {
+        const categoryDoc = await Category.findOne({ name: { $regex: category, $options: 'i' } }).select('_id');
+
+        if (categoryDoc) {
+          filter.category = categoryDoc._id;
+        }
       }
 
       if (minPrice !== undefined || maxPrice !== undefined) {
